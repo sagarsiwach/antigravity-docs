@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Pro Setup Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.6;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+        .subtitle {
+            color: #888;
+            margin-bottom: 2rem;
+        }
+        h2 {
+            font-size: 1.25rem;
+            margin: 2rem 0 1rem;
+            color: #fff;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+        h3 {
+            font-size: 1rem;
+            margin: 1.5rem 0 0.75rem;
+            color: #ccc;
+        }
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tab {
+            padding: 0.5rem 1rem;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #888;
+            transition: all 0.2s;
+        }
+        .tab:hover {
+            background: #222;
+            color: #fff;
+        }
+        .tab.active {
+            background: #2a2a2a;
+            border-color: #555;
+            color: #fff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        pre {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 0.75rem 0;
+            font-size: 0.875rem;
+        }
+        code {
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            color: #e5e5e5;
+        }
+        .step {
+            background: #111;
+            border-left: 3px solid #444;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .step-number {
+            color: #888;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        .copy-btn {
+            float: right;
+            padding: 0.25rem 0.5rem;
+            background: #333;
+            border: none;
+            border-radius: 4px;
+            color: #888;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+        .copy-btn:hover {
+            background: #444;
+            color: #fff;
+        }
+        .note {
+            background: #1a1a0a;
+            border: 1px solid #333;
+            border-left: 3px solid #aa0;
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+            font-size: 0.875rem;
+        }
+        .models {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        .model {
+            background: #1a1a1a;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+        .model-name {
+            color: #6cf;
+        }
+        .model-type {
+            color: #888;
+            font-size: 0.75rem;
+        }
+        footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid #222;
+            color: #555;
+            font-size: 0.875rem;
+        }
+        .api-key-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            font-family: monospace;
+            font-size: 1rem;
+            margin: 0.5rem 0 1rem;
+        }
+        .api-key-input:focus {
+            outline: none;
+            border-color: #555;
+        }
+        label {
+            color: #888;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Claude Pro Setup Guide</h1>
+    <p class="subtitle">Claude Opus 4.5 with Extended Thinking</p>
+
+    <div class="note">
+        <strong>What you get:</strong> Claude Opus 4.5 with extended thinking, Claude Sonnet 4.5, and Gemini models. This keeps your existing Claude Code setup intact.
+    </div>
+
+    <h2>Enter Your API Key</h2>
+    <label for="apiKey">Paste your API key here (instructions will update automatically):</label>
+    <input type="text" id="apiKey" class="api-key-input" placeholder="trial_xxxxxxxx" oninput="updateInstructions()">
+
+    <h2>Choose Your Platform</h2>
+
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('macos')">macOS / Linux</button>
+        <button class="tab" onclick="showTab('windows')">Windows</button>
+    </div>
+
+    <div id="macos" class="tab-content active">
+        <div class="step">
+            <div class="step-number">Step 1 - Create config folder and settings</div>
+            <button class="copy-btn" onclick="copyCode('macos-step1')">Copy</button>
+            <pre><code id="macos-step1">mkdir -p ~/.claude-pro && cat > ~/.claude-pro/settings.json << 'EOF'
+{
+  "showWelcomeTutorial": false,
+  "hasCompletedOnboarding": true,
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "YOUR_API_KEY",
+    "ANTHROPIC_BASE_URL": "http://proxy.classicgroup.asia",
+    "ANTHROPIC_MODEL": "claude-opus-4-5-thinking",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-5-thinking",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5-thinking",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-3-flash",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-4-5-thinking"
+  }
+}
+EOF</code></pre>
+        </div>
+
+        <div class="step">
+            <div class="step-number">Step 2 - Add alias to your shell</div>
+            <button class="copy-btn" onclick="copyCode('macos-step2')">Copy</button>
+            <pre><code id="macos-step2">echo "alias claude-pro='CLAUDE_CONFIG_DIR=~/.claude-pro claude'" >> ~/.zshrc && source ~/.zshrc</code></pre>
+            <p style="color: #888; font-size: 0.8rem; margin-top: 0.5rem;">Using bash? Replace <code>~/.zshrc</code> with <code>~/.bashrc</code></p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">Step 3 - Run Claude Pro</div>
+            <button class="copy-btn" onclick="copyCode('macos-step3')">Copy</button>
+            <pre><code id="macos-step3">claude-pro</code></pre>
+        </div>
+    </div>
+
+    <div id="windows" class="tab-content">
+        <div class="step">
+            <div class="step-number">Step 1 - Create config folder</div>
+            <button class="copy-btn" onclick="copyCode('win-step1')">Copy</button>
+            <pre><code id="win-step1">New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.claude-pro"</code></pre>
+        </div>
+
+        <div class="step">
+            <div class="step-number">Step 2 - Create settings file</div>
+            <button class="copy-btn" onclick="copyCode('win-step2')">Copy</button>
+            <pre><code id="win-step2">@'
+{
+  "showWelcomeTutorial": false,
+  "hasCompletedOnboarding": true,
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "YOUR_API_KEY",
+    "ANTHROPIC_BASE_URL": "http://proxy.classicgroup.asia",
+    "ANTHROPIC_MODEL": "claude-opus-4-5-thinking",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-5-thinking",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5-thinking",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-3-flash",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-4-5-thinking"
+  }
+}
+'@ | Out-File -FilePath "$env:USERPROFILE\.claude-pro\settings.json" -Encoding UTF8</code></pre>
+        </div>
+
+        <div class="step">
+            <div class="step-number">Step 3 - Add function to PowerShell profile</div>
+            <button class="copy-btn" onclick="copyCode('win-step3')">Copy</button>
+            <pre><code id="win-step3">if (!(Test-Path $PROFILE)) { New-Item -ItemType File -Force -Path $PROFILE }
+Add-Content $PROFILE "`nfunction claude-pro { `$env:CLAUDE_CONFIG_DIR = `"$env:USERPROFILE\.claude-pro`"; claude }"
+. $PROFILE</code></pre>
+        </div>
+
+        <div class="step">
+            <div class="step-number">Step 4 - Run Claude Pro</div>
+            <button class="copy-btn" onclick="copyCode('win-step4')">Copy</button>
+            <pre><code id="win-step4">claude-pro</code></pre>
+        </div>
+    </div>
+
+    <h2>Available Models</h2>
+    <p style="color: #888; margin-bottom: 1rem;">Switch models in session with <code>/model model-name</code></p>
+
+    <div class="models">
+        <div class="model">
+            <span class="model-name">claude-opus-4-5-thinking</span>
+            <div class="model-type">Claude - Extended thinking</div>
+        </div>
+        <div class="model">
+            <span class="model-name">claude-sonnet-4-5-thinking</span>
+            <div class="model-type">Claude - Extended thinking</div>
+        </div>
+        <div class="model">
+            <span class="model-name">claude-sonnet-4-5</span>
+            <div class="model-type">Claude - Standard</div>
+        </div>
+        <div class="model">
+            <span class="model-name">gemini-3-flash</span>
+            <div class="model-type">Gemini - Fast</div>
+        </div>
+        <div class="model">
+            <span class="model-name">gemini-3-pro-high</span>
+            <div class="model-type">Gemini - High quality</div>
+        </div>
+    </div>
+
+    <h2>Troubleshooting</h2>
+
+    <h3>"Quota exhausted" error</h3>
+    <p style="color: #888;">Switch to a different model: <code>/model gemini-3-flash</code> or wait 1-2 hours for quota reset.</p>
+
+    <h3>Connection timeout</h3>
+    <p style="color: #888;">Check your internet connection. The proxy server is in Singapore for low latency in Asia.</p>
+
+    <h3>Model not found</h3>
+    <p style="color: #888;">Use the exact model names listed above. They're case-sensitive.</p>
+
+    <footer>
+        <p>Need help? Contact your provider.</p>
+    </footer>
+
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function copyCode(elementId) {
+            const code = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = event.target;
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy', 2000);
+            });
+        }
+
+        function updateInstructions() {
+            const apiKey = document.getElementById('apiKey').value || 'YOUR_API_KEY';
+
+            // Update macOS instructions
+            document.getElementById('macos-step1').innerHTML = `mkdir -p ~/.claude-pro && cat > ~/.claude-pro/settings.json << 'EOF'
+{
+  "showWelcomeTutorial": false,
+  "hasCompletedOnboarding": true,
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "${apiKey}",
+    "ANTHROPIC_BASE_URL": "http://proxy.classicgroup.asia",
+    "ANTHROPIC_MODEL": "claude-opus-4-5-thinking",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-5-thinking",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5-thinking",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-3-flash",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-4-5-thinking"
+  }
+}
+EOF`;
+
+            // Update Windows instructions
+            document.getElementById('win-step2').innerHTML = `@'
+{
+  "showWelcomeTutorial": false,
+  "hasCompletedOnboarding": true,
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "${apiKey}",
+    "ANTHROPIC_BASE_URL": "http://proxy.classicgroup.asia",
+    "ANTHROPIC_MODEL": "claude-opus-4-5-thinking",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-5-thinking",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5-thinking",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-3-flash",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-4-5-thinking"
+  }
+}
+'@ | Out-File -FilePath "$env:USERPROFILE\\.claude-pro\\settings.json" -Encoding UTF8`;
+        }
+    </script>
+</body>
+</html>
