@@ -438,7 +438,15 @@ Add-Content $PROFILE "`nfunction claude-pro { `$env:ANTHROPIC_AUTH_TOKEN = 'YOUR
     <div class="troubleshoot-item">
         <div class="troubleshoot-title">"claude-pro: command not found"</div>
         <div class="troubleshoot-cause"><strong>What's happening:</strong> The alias/function wasn't added to your shell config, or your shell hasn't reloaded the config.</div>
-        <div class="troubleshoot-fix"><strong>What to do:</strong> Close your terminal completely and open a new one. If that doesn't work, re-run Step 1 from the instructions above.</div>
+        <div class="troubleshoot-fix"><strong>What to do:</strong> Close your terminal completely and open a new one. If that doesn't work, re-run Step 2 from the instructions above.</div>
+    </div>
+
+    <div class="troubleshoot-item">
+        <div class="troubleshoot-title">Already ran the command with "YOUR_API_KEY"?</div>
+        <div class="troubleshoot-cause"><strong>What's happening:</strong> You copied the command before entering your API key, so it saved the placeholder text instead of your actual key.</div>
+        <div class="troubleshoot-fix"><strong>What to do:</strong> Run this command to fix it (replace <code class="inline-code">sk-your-actual-key</code> with your real API key):<br><br>
+        <code class="inline-code">sed -i '' 's/YOUR_API_KEY/sk-your-actual-key/g' ~/.zshrc && source ~/.zshrc</code><br><br>
+        Then run <code class="inline-code">claude-pro</code> again.</div>
     </div>
 
     <div class="troubleshoot-item">
