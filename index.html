@@ -263,20 +263,20 @@
     <p class="subtitle">Access Claude Opus 4.5 with Extended Thinking via Claude Code CLI</p>
 
     <div class="note">
-        <strong>What you're setting up:</strong> A separate Claude Code configuration that connects to our proxy server. This gives you access to Claude Opus 4.5 with extended thinking, Claude Sonnet 4.5, and Gemini models - while keeping your existing Claude Code setup completely intact.
+        <strong>What you're setting up:</strong> A command alias that connects Claude Code to our proxy server. This gives you access to Claude Opus 4.5 with extended thinking, Claude Sonnet 4.5, and Gemini models.
     </div>
 
     <h2>Prerequisites</h2>
     <p style="color: #888; margin-bottom: 1rem;">Before you begin, make sure you have:</p>
     <ul class="prereq-list">
         <li><strong>Claude Code CLI installed</strong> - If not, install it first: <code class="inline-code">npm install -g @anthropic-ai/claude-code</code></li>
-        <li><strong>Your API key</strong> - You should have received this from your provider (starts with <code class="inline-code">trial_</code>)</li>
+        <li><strong>Your API key</strong> - You should have received this from your provider</li>
         <li><strong>Terminal access</strong> - Terminal.app on Mac, PowerShell on Windows</li>
     </ul>
 
     <h2>Step 1: Enter Your API Key</h2>
-    <p style="color: #888; margin-bottom: 0.5rem;">Paste your API key below. The instructions will automatically update with your key included, so you can copy and paste directly.</p>
-    <input type="text" id="apiKey" class="api-key-input" placeholder="trial_xxxxxxxx" oninput="updateInstructions()">
+    <p style="color: #888; margin-bottom: 0.5rem;">Paste your API key below. The instructions will automatically update with your key included.</p>
+    <input type="text" id="apiKey" class="api-key-input" placeholder="sk-your-api-key" oninput="updateInstructions()">
 
     <h2>Step 2: Follow Setup Instructions</h2>
 
@@ -287,58 +287,32 @@
 
     <div id="macos" class="tab-content active">
         <div class="info-box">
-            <strong>How this works:</strong> We're creating a separate config folder (<code class="inline-code">~/.claude-pro</code>) with its own settings. Then we create an alias <code class="inline-code">claude-pro</code> that uses this config. Your regular <code class="inline-code">claude</code> command stays unchanged.
+            <strong>How this works:</strong> We create an alias <code class="inline-code">claude-pro</code> that sets the API key and proxy URL as environment variables, then launches Claude Code. Your regular <code class="inline-code">claude</code> command stays unchanged.
         </div>
 
         <div class="step">
             <div class="step-header">
                 <div>
-                    <div class="step-number">Step 1 of 3</div>
-                    <div class="step-title">Create config folder and settings file</div>
+                    <div class="step-number">Step 1 of 2</div>
+                    <div class="step-title">Add the claude-pro alias to your shell</div>
                 </div>
                 <button class="copy-btn" onclick="copyCode('macos-step1')">Copy</button>
             </div>
-            <p class="step-explanation">This command creates a new folder <code class="inline-code">~/.claude-pro</code> in your home directory and writes the configuration file with your API key and proxy settings. The settings tell Claude Code which server to connect to and which AI models to use.</p>
-            <pre><code id="macos-step1">mkdir -p ~/.claude-pro && cat > ~/.claude-pro/settings.json << 'EOF'
-{
-  "showWelcomeTutorial": false,
-  "hasCompletedOnboarding": true,
-  "env": {
-    "ANTHROPIC_AUTH_TOKEN": "YOUR_API_KEY",
-    "ANTHROPIC_BASE_URL": "https://proxy.classicgroup.asia",
-    "ANTHROPIC_MODEL": "claude-opus-4-5-thinking",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-5-thinking",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5-thinking",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-3-flash",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-4-5-thinking"
-  }
-}
-EOF</code></pre>
-        </div>
-
-        <div class="step">
-            <div class="step-header">
-                <div>
-                    <div class="step-number">Step 2 of 3</div>
-                    <div class="step-title">Add the claude-pro alias to your shell</div>
-                </div>
-                <button class="copy-btn" onclick="copyCode('macos-step2')">Copy</button>
-            </div>
-            <p class="step-explanation">This adds a shortcut command called <code class="inline-code">claude-pro</code> to your shell configuration. The alias tells Claude Code to use the config folder we just created instead of the default one. The <code class="inline-code">source</code> command reloads your shell config so the alias works immediately.</p>
-            <pre><code id="macos-step2">echo "alias claude-pro='CLAUDE_CONFIG_DIR=~/.claude-pro claude'" >> ~/.zshrc && source ~/.zshrc</code></pre>
+            <p class="step-explanation">This adds a shortcut command called <code class="inline-code">claude-pro</code> to your shell configuration. The alias sets your API key and proxy URL, then launches Claude Code.</p>
+            <pre><code id="macos-step1">echo "alias claude-pro='ANTHROPIC_AUTH_TOKEN=YOUR_API_KEY ANTHROPIC_BASE_URL=https://proxy.classicgroup.asia claude'" >> ~/.zshrc && source ~/.zshrc</code></pre>
             <p style="color: #888; font-size: 0.8rem; margin-top: 0.5rem;"><strong>Using Bash instead of Zsh?</strong> Replace <code class="inline-code">~/.zshrc</code> with <code class="inline-code">~/.bashrc</code> in the command above. Most modern Macs use Zsh by default.</p>
         </div>
 
         <div class="step">
             <div class="step-header">
                 <div>
-                    <div class="step-number">Step 3 of 3</div>
+                    <div class="step-number">Step 2 of 2</div>
                     <div class="step-title">Launch Claude Pro</div>
                 </div>
-                <button class="copy-btn" onclick="copyCode('macos-step3')">Copy</button>
+                <button class="copy-btn" onclick="copyCode('macos-step2')">Copy</button>
             </div>
-            <p class="step-explanation">That's it! Run this command to start Claude Code with your new configuration. You should see Claude start up and connect to the proxy server.</p>
-            <pre><code id="macos-step3">claude-pro</code></pre>
+            <p class="step-explanation">That's it! Run this command to start Claude Code connected to the proxy server.</p>
+            <pre><code id="macos-step2">claude-pro</code></pre>
         </div>
 
         <div class="success-box">
@@ -348,81 +322,43 @@ EOF</code></pre>
 
     <div id="windows" class="tab-content">
         <div class="info-box">
-            <strong>How this works:</strong> We're creating a separate config folder in your user profile with its own settings. Then we add a PowerShell function <code class="inline-code">claude-pro</code> that uses this config. Your regular <code class="inline-code">claude</code> command stays unchanged.
+            <strong>How this works:</strong> We add a PowerShell function <code class="inline-code">claude-pro</code> that sets the API key and proxy URL as environment variables, then launches Claude Code. Your regular <code class="inline-code">claude</code> command stays unchanged.
         </div>
 
         <div class="step">
             <div class="step-header">
                 <div>
-                    <div class="step-number">Step 1 of 4</div>
-                    <div class="step-title">Open PowerShell as Administrator</div>
+                    <div class="step-number">Step 1 of 3</div>
+                    <div class="step-title">Open PowerShell</div>
                 </div>
             </div>
-            <p class="step-explanation">Right-click the Start button and select "Windows Terminal (Admin)" or "PowerShell (Admin)". Running as administrator ensures you have permission to create the profile file if needed.</p>
+            <p class="step-explanation">Open Windows Terminal or PowerShell. You may need to run as Administrator if you haven't created a PowerShell profile before.</p>
         </div>
 
         <div class="step">
             <div class="step-header">
                 <div>
-                    <div class="step-number">Step 2 of 4</div>
-                    <div class="step-title">Create the config folder</div>
+                    <div class="step-number">Step 2 of 3</div>
+                    <div class="step-title">Add the claude-pro function to your PowerShell profile</div>
                 </div>
                 <button class="copy-btn" onclick="copyCode('win-step1')">Copy</button>
             </div>
-            <p class="step-explanation">This creates a new folder called <code class="inline-code">.claude-pro</code> in your user profile directory (typically <code class="inline-code">C:\Users\YourName</code>). The <code class="inline-code">-Force</code> flag means it won't error if the folder already exists.</p>
-            <pre><code id="win-step1">New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.claude-pro"</code></pre>
-        </div>
-
-        <div class="step">
-            <div class="step-header">
-                <div>
-                    <div class="step-number">Step 3 of 4</div>
-                    <div class="step-title">Create the settings file</div>
-                </div>
-                <button class="copy-btn" onclick="copyCode('win-step2')">Copy</button>
-            </div>
-            <p class="step-explanation">This creates the configuration file with your API key and proxy settings. The <code class="inline-code">@'...'@</code> syntax is a PowerShell "here-string" that lets us write multi-line text. Copy and paste this entire block as one command.</p>
-            <pre><code id="win-step2">@'
-{
-  "showWelcomeTutorial": false,
-  "hasCompletedOnboarding": true,
-  "env": {
-    "ANTHROPIC_AUTH_TOKEN": "YOUR_API_KEY",
-    "ANTHROPIC_BASE_URL": "https://proxy.classicgroup.asia",
-    "ANTHROPIC_MODEL": "claude-opus-4-5-thinking",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-5-thinking",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5-thinking",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-3-flash",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-4-5-thinking"
-  }
-}
-'@ | Out-File -FilePath "$env:USERPROFILE\.claude-pro\settings.json" -Encoding UTF8</code></pre>
-        </div>
-
-        <div class="step">
-            <div class="step-header">
-                <div>
-                    <div class="step-number">Step 4 of 4</div>
-                    <div class="step-title">Add the claude-pro function to your PowerShell profile</div>
-                </div>
-                <button class="copy-btn" onclick="copyCode('win-step3')">Copy</button>
-            </div>
-            <p class="step-explanation">This adds a function called <code class="inline-code">claude-pro</code> to your PowerShell profile, which runs automatically when you open PowerShell. The first line creates the profile file if it doesn't exist. The second line adds the function. The third line reloads your profile so the function works immediately.</p>
-            <pre><code id="win-step3">if (!(Test-Path $PROFILE)) { New-Item -ItemType File -Force -Path $PROFILE }
-Add-Content $PROFILE "`nfunction claude-pro { `$env:CLAUDE_CONFIG_DIR = `"$env:USERPROFILE\.claude-pro`"; claude }"
+            <p class="step-explanation">This creates a PowerShell function that sets your API key and proxy URL, then launches Claude Code. Copy and paste this entire block.</p>
+            <pre><code id="win-step1">if (!(Test-Path $PROFILE)) { New-Item -ItemType File -Force -Path $PROFILE }
+Add-Content $PROFILE "`nfunction claude-pro { `$env:ANTHROPIC_AUTH_TOKEN = 'YOUR_API_KEY'; `$env:ANTHROPIC_BASE_URL = 'https://proxy.classicgroup.asia'; claude }"
 . $PROFILE</code></pre>
         </div>
 
         <div class="step">
             <div class="step-header">
                 <div>
-                    <div class="step-number">Done!</div>
+                    <div class="step-number">Step 3 of 3</div>
                     <div class="step-title">Launch Claude Pro</div>
                 </div>
-                <button class="copy-btn" onclick="copyCode('win-step4')">Copy</button>
+                <button class="copy-btn" onclick="copyCode('win-step2')">Copy</button>
             </div>
-            <p class="step-explanation">Run this command to start Claude Code with your new configuration. You should see Claude start up and connect to the proxy server.</p>
-            <pre><code id="win-step4">claude-pro</code></pre>
+            <p class="step-explanation">Run this command to start Claude Code connected to the proxy server.</p>
+            <pre><code id="win-step2">claude-pro</code></pre>
         </div>
 
         <div class="success-box">
@@ -472,25 +408,19 @@ Add-Content $PROFILE "`nfunction claude-pro { `$env:CLAUDE_CONFIG_DIR = `"$env:U
     <div class="troubleshoot-item">
         <div class="troubleshoot-title">Connection timeout or "could not connect"</div>
         <div class="troubleshoot-cause"><strong>What's happening:</strong> Your computer couldn't reach the proxy server. This is usually a network issue on your end.</div>
-        <div class="troubleshoot-fix"><strong>What to do:</strong> Check your internet connection. Try opening <a href="https://proxy.classicgroup.asia/health" target="_blank">https://proxy.classicgroup.asia/health</a> in your browser - you should see a response. If not, the server may be temporarily down; try again in a few minutes.</div>
-    </div>
-
-    <div class="troubleshoot-item">
-        <div class="troubleshoot-title">"Model not found" error</div>
-        <div class="troubleshoot-cause"><strong>What's happening:</strong> You tried to use a model name that doesn't exist or is misspelled.</div>
-        <div class="troubleshoot-fix"><strong>What to do:</strong> Use the exact model names listed above. They're case-sensitive - <code class="inline-code">claude-opus-4-5-thinking</code> works, but <code class="inline-code">Claude-Opus-4-5-Thinking</code> won't.</div>
+        <div class="troubleshoot-fix"><strong>What to do:</strong> Check your internet connection. Try opening <a href="https://proxy.classicgroup.asia/health" target="_blank">https://proxy.classicgroup.asia/health</a> in your browser - you should see a JSON response with "status": "ok". If not, the server may be temporarily down; try again in a few minutes.</div>
     </div>
 
     <div class="troubleshoot-item">
         <div class="troubleshoot-title">"claude-pro: command not found"</div>
         <div class="troubleshoot-cause"><strong>What's happening:</strong> The alias/function wasn't added to your shell config, or your shell hasn't reloaded the config.</div>
-        <div class="troubleshoot-fix"><strong>What to do:</strong> Close your terminal completely and open a new one. If that doesn't work, re-run Step 2 (macOS) or Step 4 (Windows) from the instructions above.</div>
+        <div class="troubleshoot-fix"><strong>What to do:</strong> Close your terminal completely and open a new one. If that doesn't work, re-run Step 1 from the instructions above.</div>
     </div>
 
     <div class="troubleshoot-item">
-        <div class="troubleshoot-title">Settings not taking effect</div>
-        <div class="troubleshoot-cause"><strong>What's happening:</strong> Claude Code might be reading from a different config file, or the settings file has a syntax error.</div>
-        <div class="troubleshoot-fix"><strong>What to do:</strong> Make sure your API key doesn't have extra spaces or quotes around it. You can verify the config file exists by running: <code class="inline-code">cat ~/.claude-pro/settings.json</code> (Mac/Linux) or <code class="inline-code">type $env:USERPROFILE\.claude-pro\settings.json</code> (Windows).</div>
+        <div class="troubleshoot-title">Login prompt or "Select login method" appears</div>
+        <div class="troubleshoot-cause"><strong>What's happening:</strong> The environment variables weren't set correctly before Claude launched.</div>
+        <div class="troubleshoot-fix"><strong>What to do:</strong> Make sure you're running <code class="inline-code">claude-pro</code> (not just <code class="inline-code">claude</code>). If you just added the alias, run <code class="inline-code">source ~/.zshrc</code> (Mac/Linux) or restart your terminal and try again.</div>
     </div>
 
     <footer>
@@ -518,38 +448,12 @@ Add-Content $PROFILE "`nfunction claude-pro { `$env:CLAUDE_CONFIG_DIR = `"$env:U
             const apiKey = document.getElementById('apiKey').value || 'YOUR_API_KEY';
 
             // Update macOS instructions
-            document.getElementById('macos-step1').innerHTML = `mkdir -p ~/.claude-pro && cat > ~/.claude-pro/settings.json << 'EOF'
-{
-  "showWelcomeTutorial": false,
-  "hasCompletedOnboarding": true,
-  "env": {
-    "ANTHROPIC_AUTH_TOKEN": "${apiKey}",
-    "ANTHROPIC_BASE_URL": "https://proxy.classicgroup.asia",
-    "ANTHROPIC_MODEL": "claude-opus-4-5-thinking",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-5-thinking",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5-thinking",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-3-flash",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-4-5-thinking"
-  }
-}
-EOF`;
+            document.getElementById('macos-step1').textContent = `echo "alias claude-pro='ANTHROPIC_AUTH_TOKEN=${apiKey} ANTHROPIC_BASE_URL=https://proxy.classicgroup.asia claude'" >> ~/.zshrc && source ~/.zshrc`;
 
             // Update Windows instructions
-            document.getElementById('win-step2').innerHTML = `@'
-{
-  "showWelcomeTutorial": false,
-  "hasCompletedOnboarding": true,
-  "env": {
-    "ANTHROPIC_AUTH_TOKEN": "${apiKey}",
-    "ANTHROPIC_BASE_URL": "https://proxy.classicgroup.asia",
-    "ANTHROPIC_MODEL": "claude-opus-4-5-thinking",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-5-thinking",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5-thinking",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-3-flash",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-4-5-thinking"
-  }
-}
-'@ | Out-File -FilePath "$env:USERPROFILE\\.claude-pro\\settings.json" -Encoding UTF8`;
+            document.getElementById('win-step1').textContent = `if (!(Test-Path $PROFILE)) { New-Item -ItemType File -Force -Path $PROFILE }
+Add-Content $PROFILE "\`nfunction claude-pro { \`$env:ANTHROPIC_AUTH_TOKEN = '${apiKey}'; \`$env:ANTHROPIC_BASE_URL = 'https://proxy.classicgroup.asia'; claude }"
+. $PROFILE`;
         }
     </script>
 </body>
