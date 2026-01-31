@@ -306,13 +306,23 @@
         <div class="step">
             <div class="step-header">
                 <div>
-                    <div class="step-number">Step 2 of 2</div>
+                    <div class="step-number">Step 2 of 3</div>
                     <div class="step-title">Launch Claude Pro</div>
                 </div>
                 <button class="copy-btn" onclick="copyCode('macos-step2')">Copy</button>
             </div>
-            <p class="step-explanation">That's it! Run this command to start Claude Code connected to the proxy server.</p>
+            <p class="step-explanation">Run this command to start Claude Code.</p>
             <pre><code id="macos-step2">claude-pro</code></pre>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div>
+                    <div class="step-number">Step 3 of 3</div>
+                    <div class="step-title">Select "3rd-party platform" when prompted</div>
+                </div>
+            </div>
+            <p class="step-explanation">When you see "Select login method", choose option <strong>3. 3rd-party platform</strong> (Amazon Bedrock, Microsoft Foundry, or Vertex AI). This tells Claude to use the proxy URL and API key you configured. You only need to do this once - it will remember your choice.</p>
         </div>
 
         <div class="success-box">
@@ -352,13 +362,23 @@ Add-Content $PROFILE "`nfunction claude-pro { `$env:ANTHROPIC_AUTH_TOKEN = 'YOUR
         <div class="step">
             <div class="step-header">
                 <div>
-                    <div class="step-number">Step 3 of 3</div>
+                    <div class="step-number">Step 3 of 4</div>
                     <div class="step-title">Launch Claude Pro</div>
                 </div>
                 <button class="copy-btn" onclick="copyCode('win-step2')">Copy</button>
             </div>
-            <p class="step-explanation">Run this command to start Claude Code connected to the proxy server.</p>
+            <p class="step-explanation">Run this command to start Claude Code.</p>
             <pre><code id="win-step2">claude-pro</code></pre>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div>
+                    <div class="step-number">Step 4 of 4</div>
+                    <div class="step-title">Select "3rd-party platform" when prompted</div>
+                </div>
+            </div>
+            <p class="step-explanation">When you see "Select login method", choose option <strong>3. 3rd-party platform</strong> (Amazon Bedrock, Microsoft Foundry, or Vertex AI). This tells Claude to use the proxy URL and API key you configured. You only need to do this once.</p>
         </div>
 
         <div class="success-box">
